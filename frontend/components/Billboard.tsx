@@ -1,9 +1,10 @@
 import React from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import PlayButton from "./PlayButton";
 
 const Billboard = () => {
     const data = {
-         
+      "id":"1",
       "title":"Big Buck Bunny",
       "description":"Three rodents amuse themselves by harassing creatures of the forest. However, when they mess with a bunny, he decides to teach them a lesson.",
       "videoUrl":"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -40,6 +41,7 @@ const Billboard = () => {
                     { data.description}
                 </p>
                 <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
+                    <PlayButton movieId={ data.id} />
                     <button className="bg-white
                                        text-white
                                        bg-opacity-30
@@ -57,7 +59,8 @@ const Billboard = () => {
                                        hover:bg-opacity-20
                                        transition
                                        ">
-                        <AiOutlineInfoCircle className="mr-1"/>
+                        <AiOutlineInfoCircle className="mr-1" />
+                        
                         More Info
                     </button>
                 </div>
