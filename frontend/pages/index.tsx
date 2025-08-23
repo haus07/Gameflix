@@ -1,6 +1,8 @@
 import Billboard from "@/components/Billboard";
 import Navbar from "../components/Navbar";
 import MovieList from "../components/MovieList";
+import ProductionHouse from "@/components/ProductionHouse";
+import StreamingInterface from "@/components/StreamingInterface";
 
 
 
@@ -41,11 +43,15 @@ export default function Home() {
 ]
   return (
     <>
-      <Navbar />
+      <div className="bg-zinc-900 min-h-screen">
+          <Navbar />
       <Billboard />
-      <div className="pb-40">
+        <div className="pb-40 ">
+        <ProductionHouse/>
         <MovieList  title="Trending now" data={ data} />
+        <MovieList  title="Top 10" data={ data} type='ranked' />
       </div>
+    </div>
     </>
   );
 }
