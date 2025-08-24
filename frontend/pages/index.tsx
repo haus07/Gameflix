@@ -2,7 +2,8 @@ import Billboard from "@/components/Billboard";
 import Navbar from "../components/Navbar";
 import MovieList from "../components/MovieList";
 import ProductionHouse from "@/components/ProductionHouse";
-import StreamingInterface from "@/components/StreamingInterface";
+import StreamingInterface from "@/components/MovieDetail";
+import MovieDetail from "@/components/MovieDetail";
 
 
 
@@ -49,8 +50,8 @@ export default function Home() {
         <div className="pb-40 ">
         <ProductionHouse/>
         <MovieList  title="Trending now" data={ data} />
-        <MovieList  title="Top 10" data={ data} type='ranked' />
-      </div>
+          <MovieList title="Top 10" data={data} type='ranked' />
+        </div>
     </div>
     </>
   );
