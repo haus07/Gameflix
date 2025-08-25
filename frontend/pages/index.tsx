@@ -2,8 +2,8 @@ import Billboard from "@/components/Billboard";
 import Navbar from "../components/Navbar";
 import MovieList from "../components/MovieList";
 import ProductionHouse from "@/components/ProductionHouse";
-import StreamingInterface from "@/components/MovieDetail";
-import MovieDetail from "@/components/MovieDetail";
+import StreamingInterface from "@/components/GameDetail";
+import MovieDetail from "@/components/GameDetail";
 
 
 

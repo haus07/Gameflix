@@ -1,7 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn,DeleteDateColumn,UpdateDateColumn,CreateDateColumn } from "typeorm";
-import { Series } from "./series.entity";
 
-@Entity()
+@Entity({
+    name:'genre'
+})
 export class Genre{
     @PrimaryGeneratedColumn()
     id: number
