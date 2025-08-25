@@ -22,7 +22,7 @@ import { SeriesModule } from './managements/series/series.module';
         database: config.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/**/*.orm{.ts,.js}'],
       })
     }),GenreModule,SeriesModule],
   

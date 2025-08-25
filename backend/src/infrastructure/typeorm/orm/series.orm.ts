@@ -1,9 +1,11 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn ,CreateDateColumn,UpdateDateColumn,DeleteDateColumn, ManyToMany, JoinTable} from "typeorm";
-import { GameMovie } from "./game-movie.entity";
-import { Genre } from "./genre.entity";
+import {  GameMovieOrmEntity } from "./game-movie.orm";
+import { Genre } from "./genre.orm";
 
-@Entity()
-export class Series {
+@Entity({
+    name:'series'
+})
+export class SeriesOrmEntity {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -29,8 +31,8 @@ export class Series {
     @JoinTable()
     genre:Genre[]
     
-    @OneToMany(() => GameMovie, (game) => game.series)
-    games: GameMovie[]
+    @OneToMany(() => GameMovieOrmEntity, (game) => game.series)
+    games: GameMovieOrmEntity[]
     
     @CreateDateColumn()
     createdAt: Date
