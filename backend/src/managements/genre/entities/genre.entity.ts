@@ -1,21 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn,DeleteDateColumn,UpdateDateColumn,CreateDateColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({
-    name:'genre'
-})
-export class Genre{
-    @PrimaryGeneratedColumn()
-    id: number
-    
-    @Column({type:'varchar'})
-    title: string
-    
-    @Column()
-        createdAt: Date
-        
-    @Column()
-        updatedAt: Date
-        
-    @Column()
-        deleteAt:Date
+@Entity({ name: 'genre' })
+export class Genre {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'varchar', length: 50 })
+  title: string;
+
+  @Column({ type: 'timestamp' })
+  createdAt: Date;
+
+  @Column({ type: 'timestamp' })
+  updatedAt: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  deletedAt?: Date | null;
+  
+  
+
+
 }

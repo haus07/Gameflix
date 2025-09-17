@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn ,CreateDateColumn,UpdateDateColumn,DeleteDateColumn, ManyToMany, JoinTable} from "typeorm";
-import { GameMovie } from "src/managements/game-movie/entities/game_movie.entity";
-import { Genre } from "src/managements/genre/entities/genre.entity";
+import { GameMovie } from "../../game-movie/entities/game_movie.entity";
+import { Genre } from "../../genre/entities/genre.entity";
 
 @Entity({
     name:'series'
@@ -20,16 +20,10 @@ export class Series {
     
     @Column({ type: 'varchar' })
     trailerSource: string
-    
-    @Column({ type: 'varchar' })
-    publisher: string
-    
-    @Column({ type: 'varchar' })
-    developer: string
-    
+      
     @ManyToMany(() => Genre)
     @JoinTable()
-    genre:Genre[]
+    genres:Genre[]
     
     @OneToMany(() => GameMovie, (game) => game.series)
     games: GameMovie[]
@@ -40,6 +34,5 @@ export class Series {
     @Column()
     updatedAt: Date
         
-    @Column()
-    deletedAt:Date
+   
 }

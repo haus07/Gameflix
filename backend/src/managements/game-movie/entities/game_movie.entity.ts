@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Genre } from "src/managements/genre/entities/genre.entity";
-import { Series } from "src/managements/series/entities/series.entity";
+import { Genre } from "../../genre/entities/genre.entity"
+import { Series } from "../../series/entities/series.entity";
+import { Developer } from "../../developer/entities/developer.entity";
 
 @Entity({
     name:'game_movie'
@@ -33,21 +34,22 @@ export class GameMovie{
     @Column({ type: 'varchar' })
     trailerSource: string
 
-    @Column({ type: 'varchar' })
-    developer: string
-    
-    @Column({ type: 'varchar' })
-    publisher: string
+ 
     
     
   
-    
+    //********Phan moi quan he***************/
     @ManyToOne(() => Series, (series) => series.games)
     series: Series
 
     @ManyToMany(() => Genre)
     @JoinTable()
-    genre:Genre[]
+    genre: Genre[]
+
+    @ManyToOne(() => Developer,(developer)=>developer.games)
+    developer:Developer
+    
+    //********** *********************************/
 
     @CreateDateColumn()
     createdAt: Date
