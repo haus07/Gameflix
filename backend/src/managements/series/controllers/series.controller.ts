@@ -25,4 +25,7 @@ export class SeriesController {
             this.logger.error("Error in get data series ", error)
         }
     }
+
+
+    
 }

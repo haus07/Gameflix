@@ -17,7 +17,7 @@ export class RenameDeletedAtCol1758035485838 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
         `ALTER TABLE "genre" RENAME COLUMN "deletedAt" TO "deleteAt"`
-        )
+        )   
         await queryRunner.query(
             `ALTER TABLE "series" RENAME COLUMN "deletedAt" TO "deleteAt"`
         )

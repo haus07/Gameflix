@@ -14,30 +14,38 @@ interface ProductionHouseCardProps {
 }
 
 const ProductionHouseCard: React.FC<ProductionHouseCardProps> = ({ item})=> {
-      const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
+  let timer: NodeJS.Timeout;
   return (
     
     <div
-    onMouseEnter={() => setIsVideoVisible(true)}
-    onMouseLeave={() => setIsVideoVisible(false)}
-    
+      onMouseEnter={() => {
+        
+         timer = setTimeout(() => setIsVideoVisible(true), 100);
+      }}
+       onMouseLeave={() => {
+      clearTimeout(timer);
+      setIsVideoVisible(false);
+    }}
     className="relative aspect-video border-[2px] border-gray-600 rounded-lg hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer shadow-xl shadow-gray-800">
                 {
                   isVideoVisible && (<video 
                     
-                    src={item?.video} 
+                    src={item?.trailerSource} 
                     autoPlay 
                     loop 
                     playsInline 
                     muted 
-                    className="absolute top-0 left-0 w-full h-full object-cover rounded-md hover:opacity-35 "
+                    preload='metadata'
+                    className="absolute top-0 left-0 w-full h-full object-cover rounded-md hover:opacity-60 "
                     /> )
                   }
   <Image 
-    src={item.image} 
+    src={item?.poster} 
     width={1000} 
     height={500} 
     className="z-[1] opacity-100 w-full h-full object-contain rounded-md" 
+    loading='lazy'
   />
 </div>
   )

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overflow-x: hidden; /* chặn scroll ngang */
+}
+
 body{
   @apply bg-zinc-900 h-full ;
 }
@@ -12,4 +16,14 @@ body{
 
 html{
   @apply h-full
+}
+
+.swiper,
+.swiper-wrapper,
+.swiper-slide {
+  overflow: visible !important;
+} 
+
+.swiper-slide:hover {
+  z-index: 50; /* nổi lên trên các slide khác */
 }
