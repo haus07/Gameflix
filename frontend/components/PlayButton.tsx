@@ -1,13 +1,18 @@
 import React from "react";
 import { BsFillPlayFill } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 interface PlayBtnProbs{
     movieId:string
 }
 
-const PlayButton: ReactFC<PlayBtnProbs> = ({movieId}) => {
+const PlayButton: ReactFC<PlayBtnProbs> = ({ movieId }) => {
+    
+    const router = useRouter()
     return (
-        <button className="bg-white
+        <button
+            onClick={()=>router.push(`/watch/${movieId}`)}
+            className="bg-white
                         rounded-md
                         py-1 md:py-2
                         px-2 md:px-4

@@ -20,9 +20,12 @@ export class GameMovie{
     backdrop: string
     
     @Column({ type: 'varchar' })
-    desciption: string
+    description: string
     
-    @Column({ type: 'float' })
+    @Column({
+        type: 'float',
+        default:0
+    })
     rating: number
     
     @Column({ type: 'varchar' })
@@ -34,20 +37,15 @@ export class GameMovie{
     @Column({ type: 'varchar' })
     trailerSource: string
 
- 
-    
-    
-  
     //********Phan moi quan he***************/
     @ManyToOne(() => Series, (series) => series.games)
     series: Series
 
-    @ManyToMany(() => Genre)
+    @ManyToMany(() => Genre, (genre) => genre.games, {cascade:true})
     @JoinTable()
     genre: Genre[]
 
-    @ManyToOne(() => Developer,(developer)=>developer.games)
-    developer:Developer
+ 
     
     //********** *********************************/
 
@@ -57,6 +55,4 @@ export class GameMovie{
     @UpdateDateColumn()
     updatedAt: Date
     
-    @DeleteDateColumn()
-    deletedAt:Date
 }

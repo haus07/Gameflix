@@ -1,225 +1,161 @@
-import React from "react";
-import { BsFillPlayFill } from "react-icons/bs";
-import { BsChevronDown, BsPlus, BsHandThumbsUp } from "react-icons/bs";
+import React, { useCallback } from "react";
+import { BsFillPlayFill, BsChevronDown, BsPlus, BsHandThumbsUp } from "react-icons/bs";
+import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
+import { useRouter } from "next/router";
 
 interface MovieCardProps {
   data: Record<string, any>;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
+  const router = useRouter();
+  const { openModal } = useInfoModalStore();
+  
+  const handleModal = useCallback(() => openModal(data?.id), [openModal, data]);
+  const handleWatch = useCallback(() => router.push(`/watch/${data.id}`), [router, data]);
+
   return (
-    <div className="group bg-zinc-900 col-span relative h-[12vw] min-h-[180px]">
-      {/* Main thumbnail image */}
+    <div className="group relative h-[12vw] min-h-[180px]">
+      {/* Base Thumbnail */}
       <img 
-        onClick={() => {}} 
-        src={data.thumbnailUrl} 
+        src={data.poster} 
         alt={data.title || "Movie"} 
         draggable={false} 
-        className="
-          cursor-pointer
-          object-cover
-          transition-all
-          duration-300
-          shadow-xl
-          rounded-md
-          group-hover:opacity-90
-          sm:group-hover:opacity-0
-          delay-300
-          w-full
-          h-[12vw]
-          min-h-[180px]
-        " 
+        className="absolute inset-0 w-full h-full object-cover rounded-xl shadow-2xl
+          transition-all duration-300 cursor-pointer
+          group-hover:brightness-75 sm:group-hover:opacity-0" 
       />
 
-      {/* Hover card */}
-      <div className="
-        opacity-0
-        absolute
-        top-0
-        transition-all
-        duration-300
-        z-10
-        invisible
-        sm:visible
-        delay-300
-        w-full
-        scale-0
-        group-hover:scale-110
-        group-hover:-translate-y-[6vw]
-        group-hover:translate-x-[2vw]
-        group-hover:opacity-100
-        drop-shadow-2xl
-      ">
-        {/* Hover thumbnail */}
-        <img 
-          onClick={() => {}} 
-          src={data.thumbnailUrl} 
-          alt={data.title || "Movie"} 
-          draggable={false} 
-          className="
-            cursor-pointer
-            object-cover
-            transition-all
-            duration-300
-            shadow-xl
-            rounded-t-md
-            w-full
-            h-[12vw]
-            min-h-[180px]
-          " 
-        />
-
-        {/* Content overlay */}
-        <div className="
-          z-10
-          bg-zinc-800
-          p-3
-          lg:p-4
-          absolute
-          w-full
-          transition-all
-          duration-300
-          shadow-2xl
-          rounded-b-md
-          border-t-2
-          border-zinc-700
-        ">
-          {/* Action buttons */}
-          <div className="flex flex-row items-center gap-2 mb-3">
-            {/* Play button */}
-            <div 
-              onClick={() => {}} 
-              className="
-                cursor-pointer 
-                w-8 h-8 lg:w-10 lg:h-10 
-                bg-white 
-                rounded-full 
-                flex justify-center items-center 
-                transition-all duration-200 
-                hover:bg-neutral-200
-                hover:scale-105
-                shadow-lg
-              "
-            >
-              <BsFillPlayFill className="text-black w-4 lg:w-5 ml-0.5" />
-            </div>
-
-            {/* Add to list button */}
-            <div 
-              onClick={() => {}} 
-              className="
-                cursor-pointer 
-                w-8 h-8 lg:w-10 lg:h-10 
-                border-white border-2 
-                rounded-full 
-                flex justify-center items-center 
-                transition-all duration-200 
-                hover:border-neutral-300
-                hover:bg-white/10
-                hover:scale-105
-              "
-            >
-              <BsPlus className="text-white hover:text-neutral-300 w-4 lg:w-5" />
-            </div>
-
-            {/* Like button */}
-            <div 
-              onClick={() => {}} 
-              className="
-                cursor-pointer 
-                w-8 h-8 lg:w-10 lg:h-10 
-                border-white border-2 
-                rounded-full 
-                flex justify-center items-center 
-                transition-all duration-200 
-                hover:border-neutral-300
-                hover:bg-white/10
-                hover:scale-105
-              "
-            >
-              <BsHandThumbsUp className="text-white hover:text-neutral-300 w-3 lg:w-4" />
-            </div>
-
-            {/* More info button */}
-            <div 
-              onClick={() => {}} 
-              className="
-                cursor-pointer 
-                ml-auto 
-                w-8 h-8 lg:w-10 lg:h-10 
-                border-white border-2 
-                rounded-full 
-                flex justify-center items-center 
-                transition-all duration-200 
-                hover:border-neutral-300
-                hover:bg-white/10
-                hover:scale-105
-              "
-            >
-              <BsChevronDown className="text-white hover:text-neutral-300 w-3 lg:w-4" />
-            </div>
+      {/* Hover Expanded Card */}
+      <div className="absolute top-0 left-0 w-full opacity-0 invisible sm:visible scale-95
+        transition-all duration-300 ease-out z-10 pointer-events-none
+        group-hover:opacity-100 group-hover:scale-110 group-hover:-translate-y-[6vw] 
+        group-hover:translate-x-[2vw] group-hover:pointer-events-auto
+        drop-shadow-[0_20px_60px_rgba(0,0,0,0.9)]">
+        
+        <div className="relative bg-zinc-900 rounded-xl overflow-hidden ring-2 ring-zinc-700/50">
+          {/* Hover Thumbnail */}
+          <div className="relative h-[12vw] min-h-[180px] overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-900">
+            <img 
+              src={data.poster} 
+              alt={data.title || "Movie"} 
+              draggable={false} 
+              className="w-full h-full object-cover cursor-pointer" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
           </div>
 
-          {/* Movie info */}
-          <div className="space-y-2">
-            {/* Match percentage and year */}
+          {/* Content Section */}
+          <div className="relative bg-gradient-to-b from-zinc-800 to-zinc-900 p-3 lg:p-4 
+            border-t-2 border-zinc-700 space-y-3">
+            
+            {/* Action Buttons */}
             <div className="flex items-center gap-2">
-              <span className="text-green-400 font-semibold text-sm lg:text-base">
-                98% Match
-              </span>
-              {data.year && (
-                <span className="text-white/70 text-xs lg:text-sm border border-white/40 px-1 rounded">
-                  {data.year}
-                </span>
-              )}
-              {data.maturityRating && (
-                <span className="text-white/70 text-xs lg:text-sm border border-white/40 px-1 rounded">
-                  {data.maturityRating}
-                </span>
-              )}
+              <ActionButton onClick={handleWatch} variant="play" size="lg" />
+              <ActionButton icon={BsPlus} size="lg" />
+              <ActionButton icon={BsHandThumbsUp} size="lg" iconSize="sm" />
+              <ActionButton onClick={handleModal} icon={BsChevronDown} size="lg" iconSize="sm" className="ml-auto" />
             </div>
 
-            {/* Duration and quality */}
-            <div className="flex items-center gap-2 text-white/80 text-xs lg:text-sm">
-              {data.duration && <span>{data.duration}</span>}
-              {data.quality && (
-                <>
-                  <span>•</span>
-                  <span className="border border-white/40 px-1 rounded text-xs">
-                    {data.quality}
-                  </span>
-                </>
+            {/* Metadata */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-emerald-400 font-bold text-sm lg:text-base tracking-wide">
+                  98% Match
+                </span>
+                {data.year && <Badge>{data.year}</Badge>}
+                {data.rating && <Badge>{data.rating}</Badge>}
+              </div>
+
+              <div className="flex items-center gap-2 text-zinc-400 text-xs lg:text-sm">
+                {data.duration && <span className="font-medium">{data.duration}</span>}
+                {data.quality && (
+                  <>
+                    <span className="text-zinc-600">•</span>
+                    <Badge variant="quality">{data.quality}</Badge>
+                  </>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {data.genre && <GenreTag>{data.genre}</GenreTag>}
+                {data.secondaryGenre && <GenreTag>{data.secondaryGenre}</GenreTag>}
+              </div>
+
+              {data.title && (
+                <h3 className="text-white font-bold text-sm lg:text-base line-clamp-1 mt-3 tracking-wide">
+                  {data.title}
+                </h3>
               )}
             </div>
-
-            {/* Genre tags */}
-            <div className="flex flex-wrap items-center gap-1 text-white/70 text-xs lg:text-sm">
-              {data.genre && (
-                <span className="bg-white/10 px-2 py-0.5 rounded-full">
-                  {data.genre}
-                </span>
-              )}
-              {data.secondaryGenre && (
-                <span className="bg-white/10 px-2 py-0.5 rounded-full">
-                  {data.secondaryGenre}
-                </span>
-              )}
-            </div>
-
-            {/* Title (if available) */}
-            {data.title && (
-              <h3 className="text-white font-semibold text-sm lg:text-base line-clamp-1 mt-2">
-                {data.title}
-              </h3>
-            )}
           </div>
-        </div>
 
-        {/* Subtle glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-red-900/20 to-transparent rounded-md pointer-events-none" />
+          {/* Accent Glow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-red-600/10 via-transparent to-transparent 
+            rounded-xl pointer-events-none opacity-60" />
+        </div>
       </div>
     </div>
   );
 };
+
+// Sub-components
+interface ActionButtonProps {
+  onClick?: () => void;
+  variant?: 'play';
+  icon?: React.ComponentType<{ className?: string }>;
+  size?: 'md' | 'lg';
+  iconSize?: 'sm' | 'md';
+  className?: string;
+}
+
+const ActionButton: React.FC<ActionButtonProps> = ({ 
+  onClick, 
+  variant, 
+  icon: Icon, 
+  size = 'md',
+  iconSize = 'md',
+  className = '' 
+}) => {
+  const isPlay = variant === 'play';
+  const sizeClasses = size === 'lg' ? 'w-10 h-10' : 'w-9 h-9';
+  const iconSizeClasses = iconSize === 'sm' ? 'w-3.5 h-3.5 lg:w-4 lg:h-4' : 'w-4 h-4 lg:w-5 lg:h-5';
+  
+  return (
+    <button
+      onClick={onClick}
+      className={`${sizeClasses} rounded-full flex items-center justify-center
+        transition-all duration-200 active:scale-90 hover:scale-105
+        ${isPlay 
+          ? 'bg-white hover:bg-zinc-100 shadow-lg hover:shadow-xl' 
+          : 'border-2 border-white/90 hover:border-white hover:bg-white/20 backdrop-blur-sm'
+        }
+        ${className}`}
+    >
+      {isPlay ? (
+        <BsFillPlayFill className={`text-black ml-0.5 ${iconSizeClasses}`} />
+      ) : Icon ? (
+        <Icon className={`text-white ${iconSizeClasses}`} />
+      ) : null}
+    </button>
+  );
+};
+
+const Badge: React.FC<{ children: React.ReactNode; variant?: 'quality' }> = ({ children, variant }) => (
+  <span className={`text-xs lg:text-sm px-1.5 py-0.5 rounded border font-medium
+    ${variant === 'quality' 
+      ? 'border-zinc-600 text-zinc-300 bg-zinc-800/50' 
+      : 'border-zinc-600 text-zinc-400'
+    }`}>
+    {children}
+  </span>
+);
+
+const GenreTag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="text-xs lg:text-sm px-3 py-1 rounded-full bg-zinc-700/60 text-zinc-300 
+    font-medium backdrop-blur-sm border border-zinc-600/30">
+    {children}
+  </span>
+);
 
 export default MovieCard;
