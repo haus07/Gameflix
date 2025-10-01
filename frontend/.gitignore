@@ -42,3 +42,8 @@ next-env.d.ts
 
 # public
 /public
+
+# Ignore DB files
+*.sql
+*.db
+*.sqlite
