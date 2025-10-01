@@ -9,7 +9,7 @@ interface Series {
     developer: string
 }
 
-export const getAllSeries:Promise<Series[]> = async () => {
+export const getAllSeries= async () => {
     const response = await api.get('api/v1/series')
-    return response.data
+    return response.data.data.data
 }

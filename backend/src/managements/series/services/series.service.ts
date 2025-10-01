@@ -13,7 +13,9 @@ export class SeriesService {
 
     async getDataSeries() {
         try {
-            const seriesData = await this.seriesRepo.find()
+            const seriesData = await this.seriesRepo.find({
+                relations:['genres']
+            })
             return {
                 data:seriesData
             }

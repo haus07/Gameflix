@@ -9,7 +9,10 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
+   images: {
+    domains: ['placehold.co'], // thêm domain của ảnh bạn
+  },
 };
 
 export default nextConfig;

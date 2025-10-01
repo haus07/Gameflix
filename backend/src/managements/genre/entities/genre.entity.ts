@@ -1,3 +1,4 @@
+import { GameMovie } from "src/managements/game-movie/entities/game_movie.entity";
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'genre' })
@@ -17,7 +18,8 @@ export class Genre {
   @Column({ type: 'timestamp', nullable: true })
   deletedAt?: Date | null;
   
-  
+  @ManyToMany(() => GameMovie, (game) => game.genre)
+  games:GameMovie[]
 
 
 }

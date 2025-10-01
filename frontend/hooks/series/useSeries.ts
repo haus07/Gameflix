@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 
 export const useSeries = () => {
     return useQuery({
-        queryKey: ['series', ''],
+        queryKey: ['series'],
         queryFn: getAllSeries,
-        keepPreviousData:true
+        staleTime:1000*60*5
     })
 }

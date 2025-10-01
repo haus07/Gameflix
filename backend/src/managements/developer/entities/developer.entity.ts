@@ -17,8 +17,7 @@ export class Developer{
     linkWebsite: string
     
     //********Phan moi quan he***************/
-    @OneToMany(() => GameMovie, (gameMovie) => gameMovie.developer)
-    games:GameMovie[]
+    
 
 
     @Column()
@@ -27,7 +26,6 @@ export class Developer{
     @Column()
     updatedAt: Date
 
-    @Column()
-    deletedAt:Date
+
     //********** *********************************/
 }
