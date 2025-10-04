@@ -9,32 +9,38 @@ export const spiderManSeed = async () => {
   const seriesRepo = AppDataSource.getRepository(Series);
   const genreRepo = AppDataSource.getRepository(Genre);
 
-  // Kiểm tra có series Spider-Man chưa, nếu chưa thì tạo
-  let series = await seriesRepo.findOne({ where: { title: "Elden Ring" } });
+  // Kiểm tra có series DC chưa, nếu chưa thì tạo
+  let series = await seriesRepo.findOne({ where: { title: "Grand Threft Auto" } });
   if (!series) {
     series = seriesRepo.create({
-      title: "Spider-Man",
-      description: "Series game hành động siêu anh hùng dựa trên Marvel Spider-Man.",
+      title: "DC",
+      description: "Series game hành động siêu anh hùng.",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
     series = await seriesRepo.save(series);
   }
 
-  // Kiểm tra có genre Superhero chưa, nếu chưa thì tạo
-  let superhero = await genreRepo.findOne({ where: { title: "RPG" } });
-  if (!superhero) {
-    superhero = genreRepo.create({
-      title: "Adventure",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    superhero = await genreRepo.save(superhero);
+  // Kiểm tra / tạo genres
+  const genreTitles = ["Shooter","RPG"];
+  const genres: Genre[] = [];
+
+  for (const title of genreTitles) {
+    let genre = await genreRepo.findOne({ where: { title } });
+    if (!genre) {
+      genre = genreRepo.create({
+        title,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      genre = await genreRepo.save(genre);
+    }
+    genres.push(genre);
   }
 
-  // Spider-Man 2 demo
+  // Game demo
   const spiderMan2 = {
-    title: "Elden Ring",
+    title: "Grand Threft Auto IV",
     poster: "https://placehold.co/600x900",
     backdrop: "spiderman2-backdrop.jpg",
     description: "Tiếp tục hành trình của Người Nhện trong một cuộc phiêu lưu mới.",
@@ -44,16 +50,16 @@ export const spiderManSeed = async () => {
     trailerSource: "https://youtube.com/watch?v=dummy_spiderman2",
   };
 
-  // Tạo entity
+  // Tạo entity với nhiều genre
   const gameEntity = gameMovieRepo.create({
     ...spiderMan2,
-    series: series,
-    genre: [superhero],
+    series,
+    genre: genres,
   });
 
   await gameMovieRepo.save(gameEntity);
 
-  console.log("✅ RS4 thành công!");
+  console.log("✅ seed game 2 genre thành công!");
 };
 
 spiderManSeed();

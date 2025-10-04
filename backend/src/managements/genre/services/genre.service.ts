@@ -23,7 +23,9 @@ export class GenreService {
                     'genre.title',
                     'game_movie.id',
                     'game_movie.title',
-                    'game_movie.poster'
+                    'game_movie.poster',
+                    'game_movie.seriesId',
+                    'game_movie.updatedAt'
                 ])
                 .getMany()
             return dataAllGenresWithMovie.length === 0 ? [] : dataAllGenresWithMovie

@@ -16,6 +16,7 @@ interface MovieListProps {
 
 const MovieList: React.FC<MovieListProps> = ({ data, title, type }) => {
   if (isEmpty(data)) return null;
+  console.log(data)
 
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
@@ -26,11 +27,17 @@ const MovieList: React.FC<MovieListProps> = ({ data, title, type }) => {
     ) : (
       <MovieCard key={movie.id} data={movie} />
     );
-
+  const titleMap = new Map<string, string>([
+      ["Superhero","Siêu anh hùng"],
+      ["Adventure","Khám phá"],
+      ["Racing","Đua xe"],
+      ["Shooter","Bắn súng"],
+      ["RPG","Nhập vai"],
+    ])
   return (
     <div className="px-4 md:px-12 mt-4 space-y-8 relative">
       <p className="text-white text-md md:text-xl lg:text-2xl font-semibold mb-4">
-        {title}
+        {titleMap.has(title)?titleMap.get(title):title}
       </p>
 
       {/* Nút mũi tên */}
@@ -67,7 +74,7 @@ const MovieList: React.FC<MovieListProps> = ({ data, title, type }) => {
           }}
           className="overflow-x-hidden"
       >
-        {data?.data.map((movie, index) => (
+        {data?.map((movie, index) => (
           <SwiperSlide key={movie.id} style={{ width: "300px" }}>
             {renderCard(movie, index)}
           </SwiperSlide>
