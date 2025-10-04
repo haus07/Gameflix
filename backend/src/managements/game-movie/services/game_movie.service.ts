@@ -14,7 +14,11 @@ export class GameMovieService {
 
     async getDataGames() {
         try {
-            const gamesData = await this.gameRepo.find()
+            const gamesData = await this.gameRepo
+                .createQueryBuilder("game_movie")
+                .orderBy("RANDOM()")
+                .limit(10)
+                .getMany()
             return {
                 data: gamesData
             }

@@ -15,7 +15,7 @@ const ProductionHouse = () => {
     return (
         <div className='px-4 md:px-12 mt-4 space-y-8'>
              <p className="text-white text-md md:text-xl lg:text-2xl font-semibold mb-4">
-                   Series of all time
+                   Dòng game nổi bật trong ngày
                 </p>
             <div className='grid grid-cols-5 md:grid-cols-5 gap-2 md:gap-5 p-2 px-5 md:px-16'>
             

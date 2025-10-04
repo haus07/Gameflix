@@ -2,30 +2,54 @@ import Billboard from "@/components/Billboard";
 import Navbar from "../components/Navbar";
 import MovieList from "../components/MovieList";
 import ProductionHouse from "@/components/ProductionHouse";
-import StreamingInterface from "@/components/GameDetail";
-import MovieDetail from "@/components/GameDetail";
 import InfoModal from "@/components/InfoModal";
 import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
 import useMovieList from "@/hooks/movie/useMovieList";
+import useHandleGenres from "@/hooks/genres/useHandleGenres";
+import { useEffect, useState } from "react";
 
+interface GameMovie {
+  id: number;
+  title: string;
+  poster: string;
+}
 
+interface Genre {
+  id: number;
+  title: string;
+  games: GameMovie[];
+}
 
 export default function Home() {
-   const {data,error,isLoading} = useMovieList()
-  
-   const {isOpen, closeModal} = useInfoModalStore();
+  const { isOpen, closeModal } = useInfoModalStore();
+  const { data, error, isLoading } = useMovieList();
+
+  const { fetchDataGenreWithMovie } = useHandleGenres();
+  const [genres, setGenres] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const response = await fetchDataGenreWithMovie();
+      console.log(response)
+      setGenres(response?.data)
+    };
+    fetchGenres();
+  }, []);
+
   return (
-    <>
-      <div className="bg-zinc-900 min-h-screen">
-         <InfoModal visible={isOpen} onClose={closeModal} />
-          <Navbar />
+    <div className="bg-zinc-900 min-h-screen">
+      <InfoModal visible={isOpen} onClose={closeModal} />
+      <Navbar />
       <Billboard />
-        <div className="pb-40 ">
-        <ProductionHouse/>
-        <MovieList  title="Trending now" data={ data} />
-          <MovieList title="Top 10" data={data} type='ranked' />
-        </div>
+      <div className="pb-40">
+        <ProductionHouse />
+        {/* 2 cái cứng */}
+        <MovieList title="Nổi bật hiện tại" data={data?.data} />
+        {/* Render thêm theo genre */}
+        {genres?.map((genre) => (
+          <MovieList key={genre?.id} title={genre?.title} data={genre?.games} />
+        ))}
+      </div>
     </div>
-    </>
   );
 }

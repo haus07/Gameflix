@@ -37,6 +37,11 @@ export class GameMovie{
     @Column({ type: 'varchar' })
     trailerSource: string
 
+
+    //Phan nay them vao de lay seriesId
+    @Column({ nullable: true })
+    seriesId:number
+
     //********Phan moi quan he***************/
     @ManyToOne(() => Series, (series) => series.games)
     series: Series
