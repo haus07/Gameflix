@@ -4,6 +4,7 @@ import PlayButton from "./PlayButton";
 import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
 import Image from "next/image";
 import useHandleMovie from "@/hooks/movie/useHandleMovie";
+import { useSeriesById } from "@/hooks/series/useSeriesById";
 
 interface InfoModalProps {
   visible?: boolean;
@@ -12,21 +13,13 @@ interface InfoModalProps {
 
 const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const [isVisible, setIsVisible] = useState<boolean>(!!visible);
-  const [data, setData] = useState<any>(null);
   const { movieId } = useInfoModalStore();
-  const { fetchDataMovie } = useHandleMovie();
+  const { useMovieDetailQuery } = useHandleMovie();
+  const { data: movieDetail, error: errorMovieDetail, isLoading: isLoadingMovieDetail } = useMovieDetailQuery(movieId)
+  console.log(movieDetail)
+  const { data: seriesData, error: errorSeriesData, isLoading: isloadingSeriesData } = useSeriesById(movieDetail?.seriesId)
+  console.log(seriesData)
   
-  const fetchMovie = async () => {
-    const responseDataMovie = await fetchDataMovie(movieId);
-    setData(responseDataMovie);
-    console.log(responseDataMovie);
-  };
-
-  useEffect(() => {
-    if (movieId) {
-      fetchMovie();
-    }
-  }, [movieId]);
 
   useEffect(() => {
     setIsVisible(!!visible);
@@ -62,11 +55,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
           {/* Hero Section with Video Thumbnail */}
           <div className="relative aspect-video w-full">
             <Image
-              src={data?.poster}
+              src={movieDetail?.poster}
               width={1920}
               height={1080}
               className="w-full h-full object-cover"
-              alt={data?.title}
+              alt={movieDetail?.title}
             />
             
             {/* Gradient Overlay - Netflix signature fade */}
@@ -75,12 +68,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
             {/* Bottom Content Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-12">
               <h2 className="text-white text-4xl font-bold mb-6">
-                {data?.title}
+                {movieDetail?.title}
               </h2>
               
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
-                <PlayButton movieId={data?.id} />
+                <PlayButton movieId={movieDetail?.id} />
                 
                 <button className="h-10 w-10 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-white transition-colors">
                   <BsPlus size={24} className="text-white" />
@@ -100,7 +93,6 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               <div className="col-span-2 space-y-4">
                 {/* Match & Year & Duration */}
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-green-500 font-semibold">98% Match</span>
                   <span className="text-gray-400">2024</span>
                   <span className="border border-gray-500 px-1 text-xs text-gray-400">
                     HD
@@ -109,7 +101,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
 
                 {/* Description */}
                 <p className="text-white text-base leading-relaxed">
-                  {data?.description}
+                  {movieDetail?.description}
                 </p>
               </div>
 
@@ -122,12 +114,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 
                 <div>
                   <span className="text-gray-500">Genres: </span>
-                  <span className="text-gray-400">{data?.genre}</span>
+                  <span className="text-gray-400">{movieDetail?.genre}</span>
                 </div>
                 
                 <div>
                   <span className="text-gray-500">Duration: </span>
-                  <span className="text-gray-400">{data?.duration}</span>
+                  <span className="text-gray-400">{movieDetail?.duration}</span>
                 </div>
               </div>
             </div>
@@ -135,36 +127,45 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
             {/* More Like This Section */}
             <div className="mt-12">
               <h3 className="text-white text-2xl font-semibold mb-6">
-                More Like This
+                Nội dung liên quan
               </h3>
               
               <div className="grid grid-cols-3 gap-4">
-                {[1, 2, 3].map((item) => (
-                  <div
-                    key={item}
-                    className="bg-zinc-800 rounded-md overflow-hidden hover:scale-105 transition-transform cursor-pointer"
-                  >
-                    <div className="aspect-video bg-zinc-700 flex items-center justify-center">
-                      <span className="text-gray-500">Preview {item}</span>
-                    </div>
-                    <div className="p-4 space-y-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-green-500 font-semibold">95% Match</span>
-                        <span className="border border-gray-600 px-1 text-gray-400">HD</span>
-                      </div>
-                      <p className="text-gray-400 text-xs line-clamp-3">
-                        Similar movie description that provides context about the content.
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                {seriesData?.[0]?.games?.filter((item)=>item.id!==movieDetail?.id)
+                  .map((item) => (
+    <div
+      key={item?.id}
+      className="bg-zinc-800 rounded-md overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+    >
+      <div className="aspect-video bg-zinc-700 relative">
+        <Image
+          src={item?.poster || "https://images.unsplash.com/photo-1606813902734-57f6c03c703f"}
+          alt={item?.title || "Game preview"}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 33vw"
+          priority={true}
+        />
+      </div>
+
+      <div className="p-4 space-y-2">
+        <div className="flex items-center justify-between text-xs">
+                          <span className="text-white font-semibold">{item?.title }</span>
+          <span className="border border-gray-600 px-1 text-gray-400">HD</span>
+        </div>
+        <p className="text-gray-400 text-xs line-clamp-3">
+          {item?.description}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
             </div>
 
             {/* About Section */}
             <div className="mt-12 pt-8 border-t border-zinc-800">
               <h3 className="text-white text-lg font-semibold mb-4">
-                About {data?.title}
+                About {movieDetail?.title}
               </h3>
               
               <div className="space-y-3 text-sm">
@@ -185,7 +186,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 
                 <div>
                   <span className="text-gray-500">Genres: </span>
-                  <span className="text-gray-400">{data?.genre}</span>
+                  <span className="text-gray-400">{movieDetail?.genre}</span>
                 </div>
               </div>
             </div>

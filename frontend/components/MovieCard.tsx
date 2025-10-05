@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { BsFillPlayFill, BsChevronDown, BsPlus, BsHandThumbsUp } from "react-icons/bs";
 import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
 import { useRouter } from "next/router";
+import debounce from 'lodash.debounce'
 
 interface MovieCardProps {
   data: Record<string, any>;
@@ -11,6 +12,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
   const { openModal } = useInfoModalStore();
   
+  // const preFetchData = (movieId: number)=>{
+    
+  // }
   const handleModal = useCallback(() => openModal(data?.id), [openModal, data]);
   const handleWatch = useCallback(() => router.push(`/watch/${data.id}`), [router, data]);
 
@@ -60,9 +64,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             {/* Metadata */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-emerald-400 font-bold text-sm lg:text-base tracking-wide">
-                  98% Match
-                </span>
+                
                 {data.year && <Badge>{data.year}</Badge>}
                 {data.rating && <Badge>{data.rating}</Badge>}
               </div>

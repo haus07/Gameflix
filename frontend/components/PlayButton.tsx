@@ -26,7 +26,7 @@ const PlayButton: ReactFC<PlayBtnProbs> = ({ movieId }) => {
                         hover:bg-neutral-300
                         transition">
             <BsFillPlayFill size={25} className="mr-1" />
-            Play
+            Xem ngay
         </button>
     )
     

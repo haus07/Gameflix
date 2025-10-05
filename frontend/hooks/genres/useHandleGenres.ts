@@ -7,21 +7,16 @@ const useHandleGenres = () => {
         queryKey: ['genresWithGames'],
         queryFn: async () => {
             try {
-                console.log("chay queryFN")
             sessionStorage.removeItem('genre_list')
             
             if (typeof window !== 'undefined') {
-                console.log("nhay vao cache trong session")
                 const cachedData = sessionStorage.getItem('genre_list')
                 if (cachedData) {
-                    console.log("return cachedData")
                     return JSON.parse(cachedData)
                 }
             }
             const response = await api.get('api/v1/genres/home')
-            console.log("goi api thanh cong")   
-                const data = response.data.data
-                console.log(data)
+            const data = response.data.data
             if (typeof window !== 'undefined' && data) {
                 sessionStorage.setItem('genre_list',JSON.stringify(data))
             }
@@ -30,7 +25,7 @@ const useHandleGenres = () => {
                 console.log(error)
            }
         },
-        staleTime: 0
+        staleTime: 1000 * 60 * 60 * 12
    })
 }
 export default useHandleGenres

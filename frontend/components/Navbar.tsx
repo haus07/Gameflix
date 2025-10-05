@@ -3,6 +3,7 @@ import MobileMenu from "./MobileMenu"
 import NavbarItems from "./NavbarItems"
 import { BsChevronDown ,BsSearch,BsBell} from "react-icons/bs"
 import AccountMenu from "./AccountMenu"
+import { useRouter } from "next/router"
 
 const Navbar = () => {
     const TOP_OFFSET = 66
@@ -14,6 +15,7 @@ const Navbar = () => {
     const toggleAccountMenu = useCallback(() => {
         setShowAccountMenu((current)=>!current)
     })
+    const router = useRouter()
     const [showBackground, setShowBackground] = useState(false)
     useEffect(() => {
         const handleScroll = () => {
@@ -45,8 +47,8 @@ const Navbar = () => {
                                     gap-7
                                     hidden
                                     lg:flex">
-                        <NavbarItems label='Home' />
-                        <NavbarItems label='Series' />
+                        <NavbarItems onclick={()=>router.push(`/`)} label='Home' />
+                        <NavbarItems onclick={()=>router.push(`/series`)} label='Series' />
                         <NavbarItems label='Films' />
                         <NavbarItems label='New public' />
                 </div>

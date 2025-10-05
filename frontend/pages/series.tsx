@@ -28,21 +28,18 @@ export default function Home() {
   console.log(data)
 
   const { data: genres, error, isLoading } = useHandleGenres()
+  const { data:series,error:errorSeries,isLoading:isLoadingSeries } = useSeries()
+    
   console.log(genres)
-
 
   return (
     <div className="bg-zinc-900 min-h-screen">
-      <InfoModal visible={isOpen} onClose={closeModal} />
       <Navbar />
       <Billboard />
       <div className="pb-40">
+        <ProductionHouse data={series } title="Dòng game nổi bật trong ngày" />
         {/* 2 cái cứng */}
-        <MovieList title="Nổi bật hiện tại" data={data?.data} />
         {/* Render thêm theo genre */}
-        {genres?.map((genre) => (
-          <MovieList key={genre?.id} title={genre?.title} data={genre?.games} />
-        ))}
       </div>
     </div>
   );

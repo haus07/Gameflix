@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, ParseIntPipe, Res } from '@nestjs/common';
 import { SeriesService } from '../services/series.service';
 import { LoggerService } from 'src/utils/log_service.service';
 
@@ -27,5 +27,18 @@ export class SeriesController {
     }
 
 
-    
+    @Get(':id')
+    async handleGetSeriesById(@Res() res,
+                              @Param('id' , ParseIntPipe) id:number) {
+        try{
+            const oneDataSeriesInfomation = await this.seriesService.getDataSeriesById(id)
+            return res.status(HttpStatus.OK).json({
+                message: 'success',
+                data:oneDataSeriesInfomation
+            })
+
+        } catch (error){
+            this.logger.error("Error in get one series",error)
+        }
+    }
 }
