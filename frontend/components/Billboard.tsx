@@ -69,7 +69,7 @@ const Billboard = () => {
             className="bg-white text-white bg-opacity-30 rounded-md py-1 md:py-2 px-3 md:px-4 text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-opacity-20 transition"
           >
             <AiOutlineInfoCircle className="mr-1" />
-            More Info
+            Thông tin
           </button>
         </motion.div>
       </motion.div>

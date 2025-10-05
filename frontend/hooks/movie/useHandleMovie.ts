@@ -42,11 +42,21 @@ const useHandleMovie = () => {
             staleTime: 1000 * 60 * 60 
         })
     }
+
+    const useMovieDetailQuery = (id) => {
+        return useQuery({
+            queryKey: ['movieDetail', id],
+            queryFn: async () => fetchDataMovie(id),
+            enabled: !!id,
+            staleTime:Infinity
+        })
+    }
     
     return {
         fetchDataRandomMovie,
         fetchDataMovie,
-        useRandomMovieQuery
+        useRandomMovieQuery,
+        useMovieDetailQuery
     }
 }
 
