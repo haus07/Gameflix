@@ -10,19 +10,11 @@ import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
 import useHandleMovie from "@/hooks/movie/useHandleMovie";
 
 const Billboard = () => {
-  const [data, setData] = useState<any>(null);
   const { openModal } = useInfoModalStore();
+  const { fetchDataRandomMovie,useRandomMovieQuery } = useHandleMovie() 
+  const { data, error, isLoading } = useRandomMovieQuery() 
   const handleOpenModal = useCallback(() => openModal(data?.id), [openModal,data]);
-  const { fetchDataRandomMovie } = useHandleMovie() 
-  const fetchRandomMovie = async () => {
-    const responseRandomMovie = await fetchDataRandomMovie()
-    setData(responseRandomMovie)
-  
-  }
-
-  useEffect(() => {
-   fetchRandomMovie()
-  },[])
+  console.log(data)
 
   if (!data) return null;
 

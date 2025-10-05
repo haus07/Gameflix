@@ -4,9 +4,10 @@ import MovieList from "../components/MovieList";
 import ProductionHouse from "@/components/ProductionHouse";
 import InfoModal from "@/components/InfoModal";
 import useInfoModalStore from "@/hooks/modals/useInfoModalStore";
-import useMovieList from "@/hooks/movie/useMovieList";
 import useHandleGenres from "@/hooks/genres/useHandleGenres";
 import { useEffect, useState } from "react";
+import { databaseConfig } from './../../backend/src/config/database.config';
+import useMovieList from "@/hooks/movie/useMovieList";
 
 interface GameMovie {
   id: number;
@@ -22,19 +23,11 @@ interface Genre {
 
 export default function Home() {
   const { isOpen, closeModal } = useInfoModalStore();
-  const { data, error, isLoading } = useMovieList();
+  const { data } = useMovieList()
+  console.log(data)
 
-  const { fetchDataGenreWithMovie } = useHandleGenres();
-  const [genres, setGenres] = useState<Genre[]>([]);
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      const response = await fetchDataGenreWithMovie();
-      console.log(response)
-      setGenres(response?.data)
-    };
-    fetchGenres();
-  }, []);
+  const { data: genres, error, isLoading } = useHandleGenres()
+  console.log(genres)
 
   return (
     <div className="bg-zinc-900 min-h-screen">
