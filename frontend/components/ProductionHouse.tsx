@@ -14,6 +14,7 @@ interface ProductionHouseProps {
 }
 
 const ProductionHouse: React.FC<ProductionHouseProps> = ({ data, title }) => {
+  console.log(data)
   if (isEmpty(data)) return null;
 
   const prevRef = useRef<HTMLDivElement>(null);

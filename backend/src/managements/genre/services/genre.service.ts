@@ -1,8 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from '../entities/genre.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from 'src/utils/log_service.service';
+import { GenreWithSeriesDto } from '../dtos/res/GenreWithSeriesDto.dto';
+import { GenreWithGameMovieDto } from '../dtos/res/GenreWithGameMovieDto';
 
 @Injectable()
 export class GenreService {
@@ -13,7 +15,7 @@ export class GenreService {
         
     }
 
-    async fetchAllGenresWithMovies() {
+    async fetchAllGenresWithMovies():Promise<GenreWithGameMovieDto[]> {
         try {
             const dataAllGenresWithMovie = await this.genreRepo
                 .createQueryBuilder('genre')
@@ -27,10 +29,28 @@ export class GenreService {
                     'game_movie.seriesId'
                 ])
                 .getMany()
-            return dataAllGenresWithMovie.length === 0 ? [] : dataAllGenresWithMovie
+            return dataAllGenresWithMovie ?? []
         } catch (error) {
             this.logger.error(error)
+            return []
       }
+    }
+
+    async fetchAllWithSeries():Promise<GenreWithSeriesDto[]> {
+        try {
+            const dataAllGenreWithSeries = await this.genreRepo
+            .createQueryBuilder('genre')
+            .leftJoin('genre.series', 'series')
+            .addSelect([
+                'series.id',
+                'series.poster'
+            ])    
+            .getMany()
+        return dataAllGenreWithSeries ?? []
+        } catch (error) {
+            this.logger.error(error)
+            return []
+        }
     }
     
 }

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { databaseConfig } from './../../backend/src/config/database.config';
 import useMovieList from "@/hooks/movie/useMovieList";
 import { useSeries } from "@/hooks/series/useSeries";
+import useSeriesWithGenres from "@/hooks/series/useSeriesWithGenres";
 
 interface GameMovie {
   id: number;
@@ -29,8 +30,9 @@ export default function Home() {
 
   const { data: genres, error, isLoading } = useHandleGenres()
   const { data:series,error:errorSeries,isLoading:isLoadingSeries } = useSeries()
-    
-  console.log(genres)
+  const { data:seriesList,error:errorSeriesList,isLoading:isLoadingSeriesList } = useSeriesWithGenres()
+
+  console.log(seriesList)
 
   return (
     <div className="bg-zinc-900 min-h-screen">
@@ -40,6 +42,9 @@ export default function Home() {
         <ProductionHouse data={series } title="Dòng game nổi bật trong ngày" />
         {/* 2 cái cứng */}
         {/* Render thêm theo genre */}
+        {seriesList?.map((seriesItem) => (
+          <ProductionHouse key={seriesItem?.id} data={seriesItem?.series} title={ seriesItem?.title} />
+        ))}
       </div>
     </div>
   );

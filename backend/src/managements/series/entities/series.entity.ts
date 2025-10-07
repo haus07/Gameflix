@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn ,CreateDateColumn,UpdateDateColumn,DeleteDateColumn, ManyToMany, JoinTable} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn , ManyToMany, JoinTable} from "typeorm";
 import { GameMovie } from "../../game-movie/entities/game_movie.entity";
 import { Genre } from "../../genre/entities/genre.entity";
 
@@ -13,7 +13,7 @@ export class Series {
     title:string
     
     @Column({ type: 'varchar' })
-    description: string
+    description: string;
 
     @Column({ type: 'varchar' })
     poster: string
@@ -21,7 +21,7 @@ export class Series {
     @Column({ type: 'varchar' })
     trailerSource: string
       
-    @ManyToMany(() => Genre)
+    @ManyToMany(() => Genre,(genre)=>genre.series)
     @JoinTable()
     genres:Genre[]
     

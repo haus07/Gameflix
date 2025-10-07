@@ -29,7 +29,7 @@ export class SeriesController {
 
     @Get(':id')
     async handleGetSeriesById(@Res() res,
-                              @Param('id' , ParseIntPipe) id:number) {
+                              @Param('id' , ParseIntPipe) id:number):Promise<void> {
         try{
             const oneDataSeriesInfomation = await this.seriesService.getDataSeriesById(id)
             return res.status(HttpStatus.OK).json({
