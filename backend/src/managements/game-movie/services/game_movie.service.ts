@@ -3,27 +3,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GameMovie } from '../entities/game_movie.entity';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
+import { LoggerService } from 'src/utils/log_service.service';
 
 @Injectable()
 export class GameMovieService {
 
     constructor(@InjectRepository(GameMovie)
-    private readonly gameRepo: Repository<GameMovie>) {
+    private readonly gameRepo: Repository<GameMovie>,
+    private readonly logger:LoggerService) {
         
     }
 
-    async getDataGames() {
+    async getDataGames():Promise<GameMovie[]> {
         try {
             const gamesData = await this.gameRepo
                 .createQueryBuilder("game_movie")
                 .orderBy("RANDOM()")
                 .limit(10)
                 .getMany()
-            return {
-                data: gamesData
-            }
+            return gamesData ?? null
         } catch (error) {
-            throw new InternalServerErrorException("Server error")
+            this.logger.error(error)
+            return []
         }
     }
 
@@ -39,7 +40,8 @@ export class GameMovieService {
             }
             return gameData
         } catch (error) {
-            throw new InternalServerErrorException("Server error")
+            this.logger.error(error)
+            return null
         }
     }
 
@@ -54,7 +56,8 @@ export class GameMovieService {
             })
             return movie
         } catch (error) {
-            throw new InternalServerErrorException("Server error")
+            this.logger.error(error)
+            return null
         }
     }
 }

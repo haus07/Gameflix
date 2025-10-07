@@ -1,7 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn,  Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Genre } from "../../genre/entities/genre.entity"
 import { Series } from "../../series/entities/series.entity";
-import { Developer } from "../../developer/entities/developer.entity";
 
 @Entity({
     name:'game_movie'
@@ -44,17 +43,13 @@ export class GameMovie{
 
     //********Phan moi quan he***************/
     @ManyToOne(() => Series, (series) => series.games)
-    @JoinColumn({name:'seriesId'})
+    @JoinColumn({ name:'seriesId' })
     series: Series
 
     @ManyToMany(() => Genre, (genre) => genre.games, {cascade:true})
     @JoinTable()
-    genre: Genre[]
-
- 
-    
-    //********** *********************************/
-
+    genre: Genre[] 
+//*******************************************/
     @CreateDateColumn()
     createdAt: Date
     

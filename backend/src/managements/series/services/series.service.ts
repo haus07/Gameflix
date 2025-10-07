@@ -32,7 +32,7 @@ export class SeriesService {
         }
     }
 
-    async getDataSeriesById(id) {
+    async getDataSeriesById(id:number) {
         try {
             const data = this.seriesRepo
                 .createQueryBuilder('series')
