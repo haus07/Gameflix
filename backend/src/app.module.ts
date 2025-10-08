@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './config/database.config';
 import { LoggerService } from './utils/log_service.service';
 import { ManagementPortalImports } from './config/import.config';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
 
 
 @Module({
@@ -15,6 +16,6 @@ import { ManagementPortalImports } from './config/import.config';
     TypeOrmModule.forRoot(databaseConfig()),
     ...ManagementPortalImports],
   controllers: [AppController],
-  providers: [AppService,LoggerService],
+  providers: [AppService,LoggerService,HttpExceptionFilter],
 })
 export class AppModule {}

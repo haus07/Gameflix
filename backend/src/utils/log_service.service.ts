@@ -27,7 +27,7 @@ export class LoggerService extends ConsoleLogger{
         this.logger = createLogger({
             level: "info",
             format: logFormat,
-            transports: [new transports.Console(),
+            transports: [
                 new transports.File({ filename: join(logDir, 'error.log'), level: 'error' }),
                 new transports.File({ filename: join(logDir, 'info.log'), level: 'info' }),
                 new transports.File({ filename: join(logDir,'debug.log'),level:'debug'})
