@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserStatus } from "../enums/userStatus.enum";
 import { ProviderLogin } from "../enums/proviederLogin.enum";
 import { Role } from "./role.entity";
@@ -7,7 +7,7 @@ import { Role } from "./role.entity";
 @Entity()
 
 export class Users{
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn('uuid')
     id: string
     
     @Column({
@@ -27,6 +27,7 @@ export class Users{
     @Column({
         unique: true,
         type: 'varchar',
+        default:null
     })
     email: string
     
@@ -66,12 +67,12 @@ export class Users{
     @ManyToOne(()=>Role,((role) => role.users))
     role:Role
 
-    @Column({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 
-    @Column({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'timestamp' })
     updatedAt: Date;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @DeleteDateColumn({ type: 'timestamp', nullable: true })
     deletedAt?: Date | null;
 }

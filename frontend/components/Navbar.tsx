@@ -4,6 +4,7 @@ import NavbarItems from "./NavbarItems"
 import { BsChevronDown ,BsSearch,BsBell} from "react-icons/bs"
 import AccountMenu from "./AccountMenu"
 import { useRouter } from "next/router"
+import Image from "next/image"
 
 const Navbar = () => {
     const TOP_OFFSET = 66
@@ -41,7 +42,14 @@ const Navbar = () => {
                         transition
                         duration-500
                         ${showBackground?'bg-zinc-900 bg-opacity-90':''  }}`}>
-                    <img className="h-4 lg:h-7" src="/images/logo.png" alt="" />
+                     <Image
+      src="/images/logo.png"
+      alt="Logo"
+      width={180}   // chiều rộng mong muốn
+      height={80}   // chiều cao mong muốn
+      className="object-contain"
+      priority      // load sớm (logo thường nên load sớm)
+    />
                     <div className="flex-row
                                     ml-8
                                     gap-7
@@ -53,23 +61,30 @@ const Navbar = () => {
                         <NavbarItems label='New public' />
                 </div>
                 <div onClick={toggleMobileMenu} className="lg:hidden flex flex-row items-center gap-2 ml-8 cursor-pointer relative">
-                    <p className="text-white text-sm">Browse</p>
-                    <BsChevronDown  className={`text-white transition ${showMobileMenu?'rotate-180':'rotate-0'}`}/>
-                    <MobileMenu visible={showMobileMenu} />
-                </div>
-                <div className="flex flex-row ml-auto gap-7 items-center">
-                    <div className="text-gray-200 hover:text-gray-300 cursor-pointer">
-                        <BsSearch/>
-                    </div>
-                    <div className="text-gray-200 hover:text-gray-300 cursor-pointer">
-                        <BsBell/>
-                    </div>
-                    <div onClick={toggleAccountMenu} className="flex flex-row items-center gap-2 cursor-pointer relative">
-                        <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
-                            <img src="/images/default-blue.png" alt="" />
-                        </div>
-                        <BsChevronDown className={`text-white transition ${showAccountMenu?'rotate-180':'rotate-0'}`} />
-                        <AccountMenu visible={ showAccountMenu} />
+                    <p className="text-green-800 text-sm font-medium">Browse</p>
+          <BsChevronDown
+            className={`text-green-800 transition ${
+              showMobileMenu ? "rotate-180" : "rotate-0"
+            }`}
+          />
+          <MobileMenu visible={showMobileMenu} />
+        </div>
+        <div className="flex flex-row ml-auto gap-7 items-center">
+          <BsSearch className="text-green-600 hover:text-green-800 cursor-pointer transition" />
+          <BsBell className="text-green-600 hover:text-green-800 cursor-pointer transition" />
+          <div
+            onClick={toggleAccountMenu}
+            className="flex flex-row items-center gap-2 cursor-pointer relative"
+          >
+            <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
+              <img src="/images/default-blue.png" alt="Profile" />
+            </div>
+            <BsChevronDown
+              className={`text-green-800 transition ${
+                showAccountMenu ? "rotate-180" : "rotate-0"
+              }`}
+            />
+            <AccountMenu visible={showAccountMenu} />
                     </div>
                 </div>
         </div>

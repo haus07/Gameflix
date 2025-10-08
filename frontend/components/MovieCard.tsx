@@ -39,7 +39,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
         
         <div className="relative bg-zinc-900 rounded-xl overflow-hidden ring-2 ring-zinc-700/50">
           {/* Hover Thumbnail */}
-          <div className="relative h-[12vw] min-h-[180px] overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-900">
+          <div className="relative h-[12vw] min-h-[180px] overflow-hidden bg-gradient-to-br from-zinc-800  to-zinc-900">
             <img 
               src={data.poster} 
               alt={data.title || "Movie"} 
@@ -93,8 +93,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
           </div>
 
           {/* Accent Glow */}
-          <div className="absolute inset-0 bg-gradient-to-t from-red-600/10 via-transparent to-transparent 
-            rounded-xl pointer-events-none opacity-60" />
+          
         </div>
       </div>
     </div>

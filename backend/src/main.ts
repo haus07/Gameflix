@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { LoggerService } from './utils/log_service.service';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -25,7 +26,7 @@ async function bootstrap() {
     whitelist: true,
     transform:true
   }))
-
+  app.useGlobalFilters(app.get(HttpExceptionFilter))
 
   
   await app.listen(process.env.PORT ?? 3000);
