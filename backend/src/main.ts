@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { LoggerService } from './utils/log_service.service';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -27,6 +28,8 @@ async function bootstrap() {
     transform:true
   }))
   app.useGlobalFilters(app.get(HttpExceptionFilter))
+
+  app.use(cookieParser())
 
   
   await app.listen(process.env.PORT ?? 3000);

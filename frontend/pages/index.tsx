@@ -25,25 +25,25 @@ interface Genre {
 export default function Home() {
   const { isOpen, closeModal } = useInfoModalStore();
   const { data } = useMovieList()
-  console.log(data)
-
   const { data: genres, error, isLoading } = useHandleGenres()
-  console.log(genres)
+return (
+  <div className="bg-zinc-900 min-h-screen">
+    <InfoModal visible={isOpen} onClose={closeModal} />
 
-
-  return (
-    <div className="bg-zinc-900 min-h-screen">
-      <InfoModal visible={isOpen} onClose={closeModal} />
+    {/* BẮT ĐẦU KHỐI HERO UNIT */}
+    <div className="relative">
       <Navbar />
       <Billboard />
-      <div className="pb-40">
-        {/* 2 cái cứng */}
-        <MovieList title="Nổi bật hiện tại" data={data?.data} />
-        {/* Render thêm theo genre */}
-        {genres?.map((genre) => (
-          <MovieList key={genre?.id} title={genre?.title} data={genre?.games} />
-        ))}
-      </div>
     </div>
-  );
+    {/* KẾT THÚC KHỐI HERO UNIT */}
+
+    <div className="pb-40">
+      {/* Các MovieList sẽ bắt đầu ngay sau khối Billboard */}
+      <MovieList title="Nổi bật hiện tại" data={data?.data} />
+      {genres?.map((genre) => (
+        <MovieList key={genre?.id} title={genre?.title} data={genre?.games} />
+      ))}
+    </div>
+  </div>
+);
 }

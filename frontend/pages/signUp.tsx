@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { Eye, EyeOff, ArrowRight, Mail, Phone, User } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
+import api from '@/axios/axios';
 
 type SignupFormData = {
   username: string;
@@ -32,18 +35,24 @@ const SignUpForm = () => {
     }));
   };
 
-  const handleLoginRedirect = () => {
-    console.log('Navigate to login');
-  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      console.log('Signup data:', formData);
-    }, 1500);
+    try {
+      const response = await api.post('api/v1/auth/register', formData)
+      if (response.data.message === 'success') {
+        toast.success("Đăng kí thàng công")  
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+    } finally {
+      setLoading(false)
+    }
   };
+
+  const router = useRouter()
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden bg-black">
@@ -94,14 +103,14 @@ const SignUpForm = () => {
                   onChange={handleChange}
                   onFocus={() => setFocusedField('username')}
                   onBlur={() => setFocusedField('')}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-red-600 focus:bg-gray-900/70 transition-all duration-300 peer"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-green-600 focus:bg-gray-900/70 transition-all duration-300 peer"
                   placeholder="Tên đăng nhập"
                   required
                 />
                 <label
                   className={`absolute left-12 transition-all duration-300 pointer-events-none ${
                     formData.username || focusedField === 'username'
-                      ? '-top-2.5 left-4 text-xs text-red-600 bg-black px-1'
+                      ? '-top-2.5 left-4 text-xs text-green-600 bg-black px-1'
                       : 'top-4 text-gray-400'
                   }`}
                 >
@@ -121,14 +130,14 @@ const SignUpForm = () => {
                   onChange={handleChange}
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField('')}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-red-600 focus:bg-gray-900/70 transition-all duration-300 peer"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-green-600 focus:bg-gray-900/70 transition-all duration-300 peer"
                   placeholder="Email"
                   required
                 />
                 <label
                   className={`absolute left-12 transition-all duration-300 pointer-events-none ${
                     formData.email || focusedField === 'email'
-                      ? '-top-2.5 left-4 text-xs text-red-600 bg-black px-1'
+                      ? '-top-2.5 left-4 text-xs text-green-600 bg-black px-1'
                       : 'top-4 text-gray-400'
                   }`}
                 >
@@ -148,14 +157,14 @@ const SignUpForm = () => {
                   onChange={handleChange}
                   onFocus={() => setFocusedField('phone')}
                   onBlur={() => setFocusedField('')}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-red-600 focus:bg-gray-900/70 transition-all duration-300 peer"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-green-600 focus:bg-gray-900/70 transition-all duration-300 peer"
                   placeholder="Số điện thoại"
                   required
                 />
                 <label
                   className={`absolute left-12 transition-all duration-300 pointer-events-none ${
                     formData.phone || focusedField === 'phone'
-                      ? '-top-2.5 left-4 text-xs text-red-600 bg-black px-1'
+                      ? '-top-2.5 left-4 text-xs text-green-600 bg-black px-1'
                       : 'top-4 text-gray-400'
                   }`}
                 >
@@ -172,14 +181,14 @@ const SignUpForm = () => {
                   onChange={handleChange}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField('')}
-                  className="w-full px-4 py-4 pr-12 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-red-600 focus:bg-gray-900/70 transition-all duration-300 peer"
+                  className="w-full px-4 py-4 pr-12 bg-gray-900/50 border border-gray-700 rounded-md text-white placeholder-transparent focus:outline-none focus:border-green-600 focus:bg-gray-900/70 transition-all duration-300 peer"
                   placeholder="Mật khẩu"
                   required
                 />
                 <label
                   className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                     formData.password || focusedField === 'password'
-                      ? '-top-2.5 text-xs text-red-600 bg-black px-1'
+                      ? '-top-2.5 text-xs text-green-600 bg-black px-1'
                       : 'top-4 text-gray-400'
                   }`}
                 >
@@ -188,7 +197,7 @@ const SignUpForm = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-4 text-gray-400 hover:text-red-600 transition-colors duration-200"
+                  className="absolute right-4 top-4 text-gray-400 hover:text-green-600 transition-colors duration-200"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -198,9 +207,9 @@ const SignUpForm = () => {
               {formData.password && (
                 <div className="space-y-2 animate-fade-in">
                   <div className="flex gap-1">
-                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 8 ? 'bg-red-600' : 'bg-gray-700'}`}></div>
-                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 10 ? 'bg-red-600' : 'bg-gray-700'}`}></div>
-                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 12 ? 'bg-red-600' : 'bg-gray-700'}`}></div>
+                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 8 ? 'bg-green-600' : 'bg-gray-700'}`}></div>
+                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 10 ? 'bg-green-600' : 'bg-gray-700'}`}></div>
+                    <div className={`h-1 flex-1 rounded-full ${formData.password.length >= 12 ? 'bg-green-600' : 'bg-gray-700'}`}></div>
                   </div>
                   <p className="text-xs text-gray-500">
                     Độ mạnh mật khẩu:{' '}
@@ -264,6 +273,7 @@ const SignUpForm = () => {
                 Bạn đã có tài khoản?{' '}
                 <button
                   type="button"
+                  onClick={()=>router.push('/login')}
                   className="text-green-500 font-semibold hover:text-green-400 transition-colors hover:underline"
                 >
                   Đăng nhập 

@@ -4,3 +4,8 @@ export interface RegisterRequestManagementData{
     email?: string
     phone?:string
 }
+
+export interface LoginRequestManagementData{
+    username: string
+    password:string
+}

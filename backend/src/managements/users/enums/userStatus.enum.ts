@@ -3,3 +3,4 @@ export enum UserStatus{
     INACTIVE = 'inactive',
     DEACTIVATED = 'deactivated'
 }
+

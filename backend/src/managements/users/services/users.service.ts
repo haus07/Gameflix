@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable,NotFoundException ,UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../entities/users.entity';
 import { Repository } from 'typeorm';
@@ -49,6 +49,32 @@ export class UsersService {
             return true
         }
         return false
+    }
+
+    async findUserByUsername(username: string): Promise<Users>{
+        const user = await this.usersRepo.findOne({
+            where: {
+                username
+            },
+            relations:['role']
+        })
+        if (!user) {
+            throw new UnauthorizedException("Tên người hoặc mật khẩu nhập sai")
+        }
+        return user
+    }
+
+     async findUserById(id: string): Promise<Users>{
+        const user = await this.usersRepo.findOne({
+            where: {
+                id
+            },
+            relations:['role']
+        })
+        if (!user) {
+            throw new UnauthorizedException("Tên người hoặc mật khẩu nhập sai")
+        }
+        return user
     }
 
 }

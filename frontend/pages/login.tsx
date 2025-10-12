@@ -5,6 +5,11 @@ import { Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/context/AuthContext';
+import { useHandleAuth } from '@/hooks/auth/useHandleAuth';
+import api from '@/axios/axios';
+import toast from 'react-hot-toast';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +17,8 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [focusedField, setFocusedField] = useState('');
+  
+  const {setUser}  = useAuth()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,6 +34,23 @@ const LoginForm = () => {
       console.log('Login data:', formData);
     }, 1500);
   };
+
+  const router = useRouter()
+
+
+  const handleLogin = async() => {
+    try {
+      const response = await api.post('api/v1/auth/login',formData)
+      if (response?.data?.message === "success") {
+        setUser(response.data.data)
+        router.push('/')
+        toast.success("Đăng nhập thành công")
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response?.data?.message)
+   }
+ }
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden bg-black">
@@ -61,7 +85,7 @@ const LoginForm = () => {
           <div className="bg-black/70 backdrop-blur-xl border border-gray-800 rounded-lg p-8 shadow-2xl animate-slide-up">
             <h2 className="text-3xl font-bold text-white mb-2">Đăng nhập</h2>
             <p className="text-gray-400 text-sm mb-8">
-              Chào mừng trở lại! Sẵn sàng cho trải nghiệm giải trí tuyệt vời.
+              Chơi game thôi!!!!!!!!!!!!!
             </p>
 
             {error && (
@@ -130,6 +154,7 @@ const LoginForm = () => {
 
               {/* Submit button */}
               <button
+                onClick={handleLogin}
                 type="submit"
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center group"
@@ -178,6 +203,7 @@ const LoginForm = () => {
               <p className="text-gray-400 text-sm">
                 Bạn chưa có tài khoản?{' '}
                 <button
+                  onClick={()=>router.push('/signUp')}
                   type="button"
                   className="text-green-500 font-semibold hover:text-green-400 transition-colors hover:underline"
                 >

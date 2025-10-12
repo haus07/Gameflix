@@ -7,11 +7,14 @@ import { databaseConfig } from './config/database.config';
 import { LoggerService } from './utils/log_service.service';
 import { ManagementPortalImports } from './config/import.config';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
+import { validationSchema } from './config/validation';
 
 
 @Module({
   imports: [ConfigModule.forRoot({
-    isGlobal:true
+    isGlobal: true,
+    envFilePath:'.env',
+    validationSchema:validationSchema
   }),
     TypeOrmModule.forRoot(databaseConfig()),
     ...ManagementPortalImports],

@@ -29,7 +29,6 @@ export class ChatGatewayGateway implements OnGatewayConnection,OnGatewayDisconne
   handleNewMessage(@MessageBody() data: string,
                    @ConnectedSocket() client:Socket):void {
     console.log(data)
-    client.emit('reply', 'This is an reply')
     this.server.emit('reply',data)
   }
 
